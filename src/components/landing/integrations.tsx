@@ -44,13 +44,17 @@ const keysRow: Integration[] = [
 function Chip({ name, Icon, tier }: Integration) {
   return (
     <div
+      title={`${name} — coming soon`}
       className={cn(
-        "flex shrink-0 items-center gap-2.5 rounded-full px-4 py-2.5 font-mono text-sm transition-transform duration-500 hover:-translate-y-1",
+        "relative flex shrink-0 items-center gap-2.5 rounded-full px-4 py-2.5 font-mono text-sm opacity-70",
         tier === "full" ? "bg-ink text-silver" : "bg-navy text-silver/80"
       )}
     >
-      <Icon className="h-4 w-4" />
+      <Icon className="h-4 w-4 opacity-70" />
       <span>{name}</span>
+      <span className="rounded-full border border-silver/25 px-1.5 py-0.5 text-[9px] tracking-[0.14em] text-silver/55 uppercase">
+        Soon
+      </span>
     </div>
   );
 }
@@ -65,7 +69,10 @@ export function Integrations() {
             Pull straight from your provider
           </h2>
           <p className="mt-4 max-w-lg text-silver/80">
-            Some providers let us read a value back. Some only ever let a secret be written — we label that honestly.
+            Provider connections are on the way. Some will let us read a value back — some only ever let a secret be written. We'll label that honestly.
+          </p>
+          <p className="mt-3 font-mono text-[11px] tracking-[0.2em] text-silver/45 uppercase">
+            Coming soon · being built
           </p>
         </Reveal>
       </div>
@@ -93,6 +100,9 @@ export function Integrations() {
         </span>
         <span className="flex items-center gap-1.5">
           <span className="h-2 w-2 rounded-full border border-silver/40" /> keys only — write-only secrets
+        </span>
+        <span className="flex items-center gap-1.5 text-silver/40">
+          All providers · coming soon
         </span>
       </div>
     </section>

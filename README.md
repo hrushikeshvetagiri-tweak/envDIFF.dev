@@ -4,7 +4,7 @@ Catch config drift before it breaks prod. Paste two `.env` files and compare the
 
 ## Stack
 
-React + TypeScript + Vite
+React + TypeScript + Vite · Cloudflare Workers
 
 ## Scripts
 
@@ -12,4 +12,7 @@ React + TypeScript + Vite
 npm install
 npm run dev
 npm run build
+npm run deploy   # build + deploy to Cloudflare Worker (envdiff-worker)
 ```
+
+Live: [envdiff.dev](https://envdiff.dev)

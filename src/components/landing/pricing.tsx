@@ -14,6 +14,7 @@ const plans = [
     cta: "Start comparing",
     to: "/compare",
     featured: false,
+    comingSoon: false,
   },
   {
     name: "EnvDiff",
@@ -29,6 +30,7 @@ const plans = [
     cta: "Get EnvDiff",
     to: "/compare",
     featured: true,
+    comingSoon: true,
   },
   {
     name: "Monitoring",
@@ -43,6 +45,7 @@ const plans = [
     cta: "Notify me at launch",
     to: "/compare",
     featured: false,
+    comingSoon: true,
   },
 ];
 
@@ -68,10 +71,19 @@ export function Pricing() {
                     : "rounded-[2rem] bg-navy"
                 )}
               >
-                {plan.featured && (
-                  <span className="mb-6 w-fit rounded-full bg-ink px-3 py-1 font-mono text-[11px] tracking-wide">
-                    Most useful
-                  </span>
+                {(plan.featured || plan.comingSoon) && (
+                  <div className="mb-6 flex flex-wrap items-center gap-2">
+                    {plan.featured && (
+                      <span className="w-fit rounded-full bg-ink px-3 py-1 font-mono text-[11px] tracking-wide">
+                        Most useful
+                      </span>
+                    )}
+                    {plan.comingSoon && (
+                      <span className="w-fit rounded-full border border-silver/25 px-3 py-1 font-mono text-[11px] tracking-wide text-silver/60">
+                        Coming soon
+                      </span>
+                    )}
+                  </div>
                 )}
                 <h3 className="font-medium tracking-tight">{plan.name}</h3>
                 <p className="mt-1 text-sm text-silver/70">{plan.tagline}</p>
@@ -89,14 +101,25 @@ export function Pricing() {
                   ))}
                 </ul>
 
-                <Link to={plan.to} className="mt-8">
+                {plan.comingSoon ? (
                   <Button
                     variant={plan.featured ? "primary" : "outline"}
-                    className="w-full"
+                    className="mt-8 w-full opacity-60"
+                    disabled
+                    title="Coming soon"
                   >
-                    {plan.cta}
+                    {plan.cta} · Coming soon
                   </Button>
-                </Link>
+                ) : (
+                  <Link to={plan.to} className="mt-8">
+                    <Button
+                      variant={plan.featured ? "primary" : "outline"}
+                      className="w-full"
+                    >
+                      {plan.cta}
+                    </Button>
+                  </Link>
+                )}
               </div>
             </Reveal>
           ))}

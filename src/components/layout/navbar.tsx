@@ -49,6 +49,15 @@ export function Navbar() {
         <div className="flex h-14 items-center gap-3 px-2 sm:h-[3.75rem] sm:px-2.5">
           <Link
             to="/"
+            onClick={(event) => {
+              if (location.pathname !== "/") return;
+              event.preventDefault();
+              if (location.hash) {
+                window.history.replaceState(null, "", "/");
+              }
+              window.scrollTo({ top: 0, behavior: "smooth" });
+              setOpen(false);
+            }}
             className="flex shrink-0 items-center rounded-full px-3 py-1 transition-colors hover:bg-white/5"
           >
             <span className="select-none font-mono text-[1.05rem] font-bold tracking-tight text-silver sm:text-[1.15rem]">
