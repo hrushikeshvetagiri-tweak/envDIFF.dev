@@ -1,0 +1,29 @@
+{
+  "name": "@envdiff/cli",
+  "version": "0.3.0",
+  "description": "Catch config drift in CI — fail a deploy if a required env var is missing or wrong.",
+  "type": "module",
+  "bin": {
+    "envdiff": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "postbuild": "chmod +x dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "dev": "tsx src/index.ts"
+  },
+  "dependencies": {
+    "@envdiff/core": "*",
+    "commander": "^12.1.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

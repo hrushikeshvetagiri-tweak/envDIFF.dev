@@ -1,0 +1,8 @@
+# Copy this file to .dev.vars for local `wrangler dev` testing.
+# .dev.vars is gitignored — never commit real keys.
+#
+# Get these from the Razorpay dashboard: Settings -> API Keys.
+# Use TEST mode keys (prefixed rzp_test_) until you're ready to go live.
+
+RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxxxx
+RAZORPAY_KEY_SECRET=xxxxxxxxxxxxxxxxxxxxxxxx

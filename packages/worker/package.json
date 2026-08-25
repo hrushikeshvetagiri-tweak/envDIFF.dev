@@ -1,0 +1,20 @@
+{
+  "name": "@envdiff/worker",
+  "private": true,
+  "version": "0.3.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787 --local",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc -p worker/tsconfig.json --noEmit",
+    "db:migrate:local": "wrangler d1 execute envdiff-db --local --file=migrations/0001_licenses.sql && wrangler d1 execute envdiff-db --local --file=migrations/0002_license_activations.sql && wrangler d1 execute envdiff-db --local --file=migrations/0003_shares.sql",
+    "db:migrate:remote": "wrangler d1 execute envdiff-db --remote --file=migrations/0001_licenses.sql && wrangler d1 execute envdiff-db --remote --file=migrations/0002_license_activations.sql && wrangler d1 execute envdiff-db --remote --file=migrations/0003_shares.sql"
+  },
+  "dependencies": {
+    "@envdiff/core": "*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260825.1",
+    "wrangler": "^4.125.0"
+  }
+}
