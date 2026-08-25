@@ -2,6 +2,8 @@
 
 Catch config drift before it breaks prod. Paste two `.env` files and compare them in the browser — no signup, nothing leaves your tab.
 
+**Current release:** [v0.1.0](./CHANGELOG.md#010--2026-08-25) · production branch: `gamma`
+
 ## Stack
 
 React + TypeScript + Vite · Cloudflare Workers
