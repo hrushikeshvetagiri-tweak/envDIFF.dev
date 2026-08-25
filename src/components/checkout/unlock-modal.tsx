@@ -4,6 +4,7 @@ import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { CheckoutButton } from "@/components/checkout/checkout-button";
 import { verifyLicense } from "@/lib/license";
+import { PAYMENTS_ENABLED } from "@/lib/flags";
 import { cn } from "@/lib/utils";
 
 interface UnlockModalProps {
@@ -19,7 +20,7 @@ const FEATURES = [
 ];
 
 export function UnlockModal({ open, onClose, onActivated }: UnlockModalProps) {
-  const [tab, setTab] = useState<"buy" | "existing">("buy");
+  const [tab, setTab] = useState<"buy" | "existing">(PAYMENTS_ENABLED ? "buy" : "existing");
   const [keyInput, setKeyInput] = useState("");
   const [checking, setChecking] = useState(false);
   const [checkError, setCheckError] = useState<string | null>(null);
@@ -89,28 +90,36 @@ export function UnlockModal({ open, onClose, onActivated }: UnlockModalProps) {
 
   return (
     <Modal open={open} onClose={close} title="Unlock EnvDiff" icon={<KeyRound className="h-4 w-4" />}>
-      <div className="mb-5 flex rounded-full bg-ink p-1">
-        <button
-          onClick={() => setTab("buy")}
-          className={cn(
-            "flex-1 rounded-full py-1.5 text-xs font-medium transition-colors",
-            tab === "buy" ? "bg-silver text-ink" : "text-silver/60 hover:text-silver"
-          )}
-        >
-          Buy a license
-        </button>
-        <button
-          onClick={() => setTab("existing")}
-          className={cn(
-            "flex-1 rounded-full py-1.5 text-xs font-medium transition-colors",
-            tab === "existing" ? "bg-silver text-ink" : "text-silver/60 hover:text-silver"
-          )}
-        >
-          I have a key
-        </button>
-      </div>
+      {PAYMENTS_ENABLED ? (
+        <div className="mb-5 flex rounded-full bg-ink p-1">
+          <button
+            onClick={() => setTab("buy")}
+            className={cn(
+              "flex-1 rounded-full py-1.5 text-xs font-medium transition-colors",
+              tab === "buy" ? "bg-silver text-ink" : "text-silver/60 hover:text-silver"
+            )}
+          >
+            Buy a license
+          </button>
+          <button
+            onClick={() => setTab("existing")}
+            className={cn(
+              "flex-1 rounded-full py-1.5 text-xs font-medium transition-colors",
+              tab === "existing" ? "bg-silver text-ink" : "text-silver/60 hover:text-silver"
+            )}
+          >
+            I have a key
+          </button>
+        </div>
+      ) : (
+        <p className="mb-5 rounded-xl border border-silver/10 bg-ink px-4 py-3 text-sm leading-relaxed text-silver/70">
+          Checkout is{" "}
+          <span className="font-medium text-silver">coming soon</span> while we finish payment verification. If you
+          already have a license key, activate it below.
+        </p>
+      )}
 
-      {tab === "buy" ? (
+      {tab === "buy" && PAYMENTS_ENABLED ? (
         <div>
           <div className="mb-5 flex items-baseline gap-2 rounded-xl border border-silver/10 bg-ink px-4 py-3.5">
             <span className="text-2xl font-medium tracking-tight text-silver">₹1,499</span>

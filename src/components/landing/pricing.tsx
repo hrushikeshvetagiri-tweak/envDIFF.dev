@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { UnlockModal } from "@/components/checkout/unlock-modal";
 import { useLicense } from "@/hooks/use-license";
+import { PAYMENTS_ENABLED } from "@/lib/flags";
 import { cn } from "@/lib/utils";
 
 const plans = [
@@ -34,8 +35,9 @@ const plans = [
     cta: "Get EnvDiff",
     to: "/compare",
     featured: true,
-    comingSoon: false,
-    purchasable: true,
+    // Held behind PAYMENTS_ENABLED during Razorpay / site verification.
+    comingSoon: !PAYMENTS_ENABLED,
+    purchasable: PAYMENTS_ENABLED,
   },
   {
     name: "Monitoring",
