@@ -12,7 +12,7 @@
     "build": "npm run build -w @envdiff/core && npm run build -w @envdiff/web",
     "build:core": "npm run build -w @envdiff/core",
     "build:cli": "npm run build -w @envdiff/core && npm run build -w @envdiff/cli",
-    "typecheck": "npm run typecheck -w @envdiff/core && npm run typecheck -w @envdiff/web && npm run typecheck -w @envdiff/worker && npm run typecheck -w @envdiff/cli",
+    "typecheck": "npm run build -w @envdiff/core && npm run typecheck -w @envdiff/core && npm run typecheck -w @envdiff/web && npm run typecheck -w @envdiff/worker && npm run typecheck -w @envdiff/cli",
     "deploy": "npm run build && npm run deploy -w @envdiff/worker",
     "db:migrate:local": "npm run db:migrate:local -w @envdiff/worker",
     "db:migrate:remote": "npm run db:migrate:remote -w @envdiff/worker",
