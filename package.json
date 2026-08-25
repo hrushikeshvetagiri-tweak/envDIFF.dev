@@ -1,7 +1,7 @@
 {
   "name": "envdiff",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,11 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "deploy": "npm run build && wrangler deploy",
-    "cf:dev": "npm run build && wrangler dev"
+    "cf:dev": "npm run build && wrangler dev",
+    "worker:dev": "wrangler dev --port 8787 --local",
+    "worker:typecheck": "tsc -p worker/tsconfig.json --noEmit",
+    "db:migrate:local": "wrangler d1 execute envdiff-db --local --file=migrations/0001_licenses.sql && wrangler d1 execute envdiff-db --local --file=migrations/0002_license_activations.sql",
+    "db:migrate:remote": "wrangler d1 execute envdiff-db --remote --file=migrations/0001_licenses.sql && wrangler d1 execute envdiff-db --remote --file=migrations/0002_license_activations.sql"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.15.1",
@@ -22,6 +26,7 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260825.1",
     "@tailwindcss/vite": "^4.3.3",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",

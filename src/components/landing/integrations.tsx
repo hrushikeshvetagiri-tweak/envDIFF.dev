@@ -21,10 +21,11 @@ interface Integration {
   name: string;
   Icon: SiIcon;
   tier: "full" | "keys";
+  status?: "live";
 }
 
 const fullRow: Integration[] = [
-  { name: "Vercel", Icon: SiVercel, tier: "full" },
+  { name: "Vercel", Icon: SiVercel, tier: "full", status: "live" },
   { name: "Netlify", Icon: SiNetlify, tier: "full" },
   { name: "Railway", Icon: SiRailway, tier: "full" },
   { name: "Render", Icon: SiRender, tier: "full" },
@@ -41,20 +42,29 @@ const keysRow: Integration[] = [
   { name: "AWS Amplify", Icon: Cloud, tier: "keys" },
 ];
 
-function Chip({ name, Icon, tier }: Integration) {
+function Chip({ name, Icon, tier, status }: Integration) {
+  const live = status === "live";
   return (
     <div
-      title={`${name} — coming soon`}
+      title={live ? `${name} — connect now` : `${name} — coming soon`}
       className={cn(
-        "relative flex shrink-0 items-center gap-2.5 rounded-full px-4 py-2.5 font-mono text-sm opacity-70",
+        "relative flex shrink-0 items-center gap-2.5 rounded-full px-4 py-2.5 font-mono text-sm",
+        live ? "opacity-100" : "opacity-70",
         tier === "full" ? "bg-ink text-silver" : "bg-navy text-silver/80"
       )}
     >
-      <Icon className="h-4 w-4 opacity-70" />
+      <Icon className={cn("h-4 w-4", live ? "opacity-100" : "opacity-70")} />
       <span>{name}</span>
-      <span className="rounded-full border border-silver/25 px-1.5 py-0.5 text-[9px] tracking-[0.14em] text-silver/55 uppercase">
-        Soon
-      </span>
+      {live ? (
+        <span className="flex items-center gap-1 rounded-full border border-silver/40 px-1.5 py-0.5 text-[9px] tracking-[0.14em] text-silver uppercase">
+          <span className="h-1.5 w-1.5 rounded-full bg-silver" />
+          Live
+        </span>
+      ) : (
+        <span className="rounded-full border border-silver/25 px-1.5 py-0.5 text-[9px] tracking-[0.14em] text-silver/55 uppercase">
+          Soon
+        </span>
+      )}
     </div>
   );
 }
@@ -69,10 +79,11 @@ export function Integrations() {
             Pull straight from your provider
           </h2>
           <p className="mt-4 max-w-lg text-silver/80">
-            Provider connections are on the way. Some will let us read a value back — some only ever let a secret be written. We'll label that honestly.
+            Vercel connects today — paste a token, pick a project, done. The rest are on the way. Some will let us
+            read a value back, some only ever let a secret be written — we'll label that honestly.
           </p>
           <p className="mt-3 font-mono text-[11px] tracking-[0.2em] text-silver/45 uppercase">
-            Coming soon · being built
+            Vercel live · more being built
           </p>
         </Reveal>
       </div>
@@ -102,7 +113,7 @@ export function Integrations() {
           <span className="h-2 w-2 rounded-full border border-silver/40" /> keys only — write-only secrets
         </span>
         <span className="flex items-center gap-1.5 text-silver/40">
-          All providers · coming soon
+          Vercel is live · everything else is being built
         </span>
       </div>
     </section>

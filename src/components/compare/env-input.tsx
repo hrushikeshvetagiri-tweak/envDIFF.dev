@@ -10,6 +10,7 @@ interface EnvInputProps {
   placeholder?: string;
   accessory?: ReactNode;
   tone: "ink" | "navy" | "charcoal";
+  divider?: boolean;
 }
 
 const tones = {
@@ -26,11 +27,12 @@ export function EnvInput({
   placeholder,
   accessory,
   tone,
+  divider,
 }: EnvInputProps) {
   const count = Object.keys(parseEnv(value)).length;
 
   return (
-    <div className={cn("flex min-h-0 flex-col", tones[tone], tone === "navy" && "lg:border-l lg:border-white/10")}>
+    <div className={cn("flex min-h-0 flex-col", tones[tone], divider && "lg:border-l lg:border-white/10")}>
       <div className="flex shrink-0 items-center justify-between gap-3 px-4 py-3">
         <div className="flex items-baseline gap-3 font-mono text-[11px] tracking-[0.28em] uppercase">
           <span className="opacity-50">{kicker}</span>

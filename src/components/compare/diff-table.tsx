@@ -12,9 +12,9 @@ interface DiffTableProps {
 
 const statusConfig = {
   match: { label: "match", row: "border-l-2 border-l-transparent" },
-  different: { label: "different", row: "border-l-2 border-l-silver/50 bg-charcoal" },
-  "missing-right": { label: "missing in prod", row: "border-l-2 border-l-paper bg-navy" },
-  "missing-left": { label: "missing in local", row: "border-l-2 border-l-paper bg-navy" },
+  different: { label: "different", row: "border-l-2 border-l-silver/40 bg-white/[0.02]" },
+  "missing-right": { label: "missing in prod", row: "border-l-2 border-l-silver bg-white/[0.03]" },
+  "missing-left": { label: "missing in local", row: "border-l-2 border-l-silver bg-white/[0.03]" },
 };
 
 function RevealButton({ revealed, onClick }: { revealed: boolean; onClick: () => void }) {

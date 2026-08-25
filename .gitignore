@@ -26,5 +26,7 @@ dist-ssr
 # Local / agent
 .claude
 
-# Local / agent
-.claude
+# Cloudflare local state & secrets
+.wrangler
+.dev.vars
+.dev.vars.*

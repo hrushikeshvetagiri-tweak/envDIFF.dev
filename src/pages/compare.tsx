@@ -1,10 +1,13 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { SiVercel, SiNetlify, SiRailway } from "@icons-pack/react-simple-icons";
-import { ArrowLeft, Wand2 } from "lucide-react";
+import { ArrowLeft, Lock, Wand2 } from "lucide-react";
 import { EnvInput } from "@/components/compare/env-input";
 import { DiffTable } from "@/components/compare/diff-table";
+import { ConnectVercelModal } from "@/components/compare/connect-vercel-modal";
+import { UnlockModal } from "@/components/checkout/unlock-modal";
 import { Button } from "@/components/ui/button";
+import { useLicense } from "@/hooks/use-license";
 import { diffEnv, parseEnv, summarize } from "@/lib/env-diff";
 import { cn } from "@/lib/utils";
 
@@ -19,16 +22,13 @@ STRIPE_KEY=sk_test_abc123
 API_URL=http://localhost:3000
 SENDGRID_KEY=SG.xxxxx`;
 
-const providers = [
-  { name: "Vercel", Icon: SiVercel },
-  { name: "Netlify", Icon: SiNetlify },
-  { name: "Railway", Icon: SiRailway },
-];
-
 export function Compare() {
   const [left, setLeft] = useState("");
   const [right, setRight] = useState("");
   const [hideMatch, setHideMatch] = useState(false);
+  const [connectOpen, setConnectOpen] = useState(false);
+  const [unlockOpen, setUnlockOpen] = useState(false);
+  const { isLicensed, activate } = useLicense();
 
   const rows = useMemo(() => diffEnv(parseEnv(left), parseEnv(right)), [left, right]);
   const stats = useMemo(() => summarize(rows), [rows]);
@@ -40,6 +40,14 @@ export function Compare() {
   const loadExample = () => {
     setLeft(EXAMPLE_LEFT);
     setRight(EXAMPLE_RIGHT);
+  };
+
+  const handleVercelClick = () => {
+    if (isLicensed) {
+      setConnectOpen(true);
+    } else {
+      setUnlockOpen(true);
+    }
   };
 
   return (
@@ -74,11 +82,11 @@ export function Compare() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-4 lg:flex lg:flex-1 lg:flex-col">
-          <StatTile label="keys" value={stats.total} className="bg-charcoal text-silver" />
-          <StatTile label="missing" value={stats.missing} className="bg-paper text-ink" />
-          <StatTile label="different" value={stats.different} className="bg-charcoal text-silver" />
-          <StatTile label="matching" value={stats.match} className="bg-ink text-silver" />
+        <div className="grid grid-cols-4 divide-silver/10 lg:flex lg:flex-1 lg:flex-col lg:divide-y">
+          <StatTile label="keys" value={stats.total} />
+          <StatTile label="missing" value={stats.missing} emphasis={stats.missing > 0} />
+          <StatTile label="different" value={stats.different} emphasis={stats.different > 0} />
+          <StatTile label="matching" value={stats.match} />
         </div>
 
         <p className="hidden px-4 py-4 font-mono text-[11px] leading-relaxed tracking-wide text-silver/45 lg:block">
@@ -122,13 +130,27 @@ export function Compare() {
             <EnvInput
               kicker="02"
               label="Production"
-              tone="navy"
+              tone="ink"
+              divider
               value={right}
               onChange={setRight}
               placeholder={"DATABASE_URL=postgres://prod-server:5432/mydb\nAPI_URL=https://api.example.com"}
               accessory={
                 <div className="flex items-center gap-1">
-                  {providers.map(({ name, Icon }) => (
+                  <button
+                    onClick={handleVercelClick}
+                    title={isLicensed ? "Connect Vercel" : "Connect Vercel — unlock to use"}
+                    className="relative flex h-6 w-6 items-center justify-center text-silver/70 transition-colors hover:text-silver"
+                  >
+                    <SiVercel className="h-3.5 w-3.5" />
+                    {!isLicensed && (
+                      <Lock className="absolute -right-1 -bottom-1 h-2.5 w-2.5 rounded-full bg-charcoal p-px text-silver/50" />
+                    )}
+                  </button>
+                  {[
+                    { name: "Netlify", Icon: SiNetlify },
+                    { name: "Railway", Icon: SiRailway },
+                  ].map(({ name, Icon }) => (
                     <button
                       key={name}
                       disabled
@@ -145,15 +167,33 @@ export function Compare() {
           <DiffTable rows={visible} leftLabel="local" rightLabel="production" />
         </div>
       </div>
+
+      <ConnectVercelModal open={connectOpen} onClose={() => setConnectOpen(false)} onImport={setRight} />
+      <UnlockModal
+        open={unlockOpen}
+        onClose={() => setUnlockOpen(false)}
+        onActivated={(key) => {
+          activate(key);
+          setUnlockOpen(false);
+          setConnectOpen(true);
+        }}
+      />
     </div>
   );
 }
 
-function StatTile({ label, value, className }: { label: string; value: number; className: string }) {
+function StatTile({ label, value, emphasis }: { label: string; value: number; emphasis?: boolean }) {
   return (
-    <div className={cn("flex flex-col justify-between px-3 py-3 lg:min-h-[4.75rem] lg:px-4 lg:py-4", className)}>
-      <span className="font-mono text-[10px] tracking-[0.22em] uppercase opacity-60">{label}</span>
-      <span className="font-mono text-xl leading-none tracking-tight lg:text-3xl">{value}</span>
+    <div className="flex flex-col justify-between border-silver/10 px-3 py-3 max-lg:border-r last:max-lg:border-r-0 lg:min-h-[4.75rem] lg:px-4 lg:py-4">
+      <span className="font-mono text-[10px] tracking-[0.22em] text-silver/50 uppercase">{label}</span>
+      <span
+        className={cn(
+          "font-mono text-xl leading-none tracking-tight lg:text-3xl",
+          emphasis ? "text-white" : "text-silver/70"
+        )}
+      >
+        {value}
+      </span>
     </div>
   );
 }

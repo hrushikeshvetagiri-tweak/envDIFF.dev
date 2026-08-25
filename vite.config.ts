@@ -11,4 +11,11 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      // Run `npx wrangler dev --port 8787` alongside `npm run dev` so /api
+      // routes hit the real Worker while everything else keeps Vite's HMR.
+      '/api': 'http://localhost:8787',
+    },
+  },
 })

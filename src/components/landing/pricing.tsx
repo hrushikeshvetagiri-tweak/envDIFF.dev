@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { Check } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
+import { UnlockModal } from "@/components/checkout/unlock-modal";
+import { useLicense } from "@/hooks/use-license";
 import { cn } from "@/lib/utils";
 
 const plans = [
   {
     name: "Free",
-    price: "$0",
+    price: "₹0",
     period: "",
     tagline: "Paste and compare, forever.",
     features: ["Paste any two .env files", "Instant client-side diff", "No account, no install"],
@@ -15,10 +18,11 @@ const plans = [
     to: "/compare",
     featured: false,
     comingSoon: false,
+    purchasable: false,
   },
   {
     name: "EnvDiff",
-    price: "$19",
+    price: "₹1,499",
     period: "one-time",
     tagline: "Connect providers, save & share.",
     features: [
@@ -30,11 +34,12 @@ const plans = [
     cta: "Get EnvDiff",
     to: "/compare",
     featured: true,
-    comingSoon: true,
+    comingSoon: false,
+    purchasable: true,
   },
   {
     name: "Monitoring",
-    price: "$5",
+    price: "₹499",
     period: "/mo, optional",
     tagline: "For drift you didn't cause.",
     features: [
@@ -46,10 +51,15 @@ const plans = [
     to: "/compare",
     featured: false,
     comingSoon: true,
+    purchasable: false,
   },
 ];
 
 export function Pricing() {
+  const [unlockOpen, setUnlockOpen] = useState(false);
+  const { isLicensed, activate } = useLicense();
+  const navigate = useNavigate();
+
   return (
     <section id="pricing" className="bg-ink text-silver">
       <div className="mx-auto max-w-6xl px-6 py-28">
@@ -110,6 +120,14 @@ export function Pricing() {
                   >
                     {plan.cta} · Coming soon
                   </Button>
+                ) : plan.purchasable ? (
+                  <Button
+                    variant={plan.featured ? "primary" : "outline"}
+                    className="mt-8 w-full"
+                    onClick={() => (isLicensed ? navigate("/compare") : setUnlockOpen(true))}
+                  >
+                    {isLicensed ? "Unlocked — open the tool" : plan.cta}
+                  </Button>
                 ) : (
                   <Link to={plan.to} className="mt-8">
                     <Button
@@ -125,6 +143,16 @@ export function Pricing() {
           ))}
         </div>
       </div>
+
+      <UnlockModal
+        open={unlockOpen}
+        onClose={() => setUnlockOpen(false)}
+        onActivated={(key) => {
+          activate(key);
+          setUnlockOpen(false);
+          navigate("/compare");
+        }}
+      />
     </section>
   );
 }
