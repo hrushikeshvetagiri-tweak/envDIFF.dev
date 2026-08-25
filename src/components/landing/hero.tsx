@@ -17,9 +17,16 @@ export function Hero() {
       <div className="relative mx-auto grid w-full max-w-6xl gap-12 px-6 py-28 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
         <div>
           <Reveal>
-            <p className="mb-7 font-mono text-[11px] tracking-[0.32em] text-accent uppercase">
-              Local ↔ prod · in the browser
-            </p>
+            <a
+              href="#integrations"
+              className="mb-8 inline-flex items-center gap-2.5 rounded-full bg-silver px-3.5 py-1.5 font-mono text-[12px] font-medium tracking-[0.14em] text-ink uppercase transition-transform duration-300 hover:scale-[1.02] hover:bg-white"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ink/40" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-ink" />
+              </span>
+              Vercel integration live
+            </a>
           </Reveal>
 
           <Reveal delay={80}>
