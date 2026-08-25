@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  --color-bg: #121314;
+  --color-bg-soft: #1c1d21;
+  --color-panel: #1c1d21;
+  --color-panel-hover: #25262b;
+  --color-border: rgba(196, 197, 201, 0.14);
+  --color-border-strong: #c4c5c9;
+
+  --color-ink: #121314;
+  --color-ink-dim: #1c1d21;
+  --color-ink-faint: #c4c5c9;
+  --color-navy: #16171b;
+  --color-charcoal: #1c1d21;
+  --color-silver: #c4c5c9;
+  --color-paper: #ececee;
+
+  --color-accent: #8a8e96;
+  --color-accent-soft: #1c1d21;
+  --color-accent-dim: rgba(138, 142, 150, 0.14);
+  --color-accent-border: rgba(138, 142, 150, 0.4);
+
+  --color-good: #c4c5c9;
+  --color-good-dim: rgba(196, 197, 201, 0.1);
+  --color-warn: #8a8e96;
+  --color-warn-dim: rgba(138, 142, 150, 0.12);
+  --color-bad: #16171b;
+  --color-bad-dim: rgba(22, 23, 27, 0.4);
+
+  --shadow-glow: 0 16px 40px -24px rgba(0, 0, 0, 0.55);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-silver);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+  }
+
+  ::selection {
+    background: #c4c5c9;
+    color: #121314;
+  }
+}
+
+@layer utilities {
+  .bg-grid-navy {
+    background-image:
+      linear-gradient(to right, rgba(196, 197, 201, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(196, 197, 201, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+  }
+
+  .orb {
+    background: radial-gradient(circle, rgba(196, 197, 201, 0.12) 0%, rgba(196, 197, 201, 0.04) 42%, transparent 70%);
+  }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-marquee {
+    animation: marquee 32s linear infinite;
+  }
+
+  .animate-marquee-reverse {
+    animation: marquee-reverse 32s linear infinite;
+  }
+
+  .animate-drift {
+    animation: drift 18s ease-in-out infinite;
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 48s linear infinite;
+  }
+
+  .reveal-in {
+    animation: reveal-in 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes marquee-reverse {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-6%, 8%, 0) scale(1.08);
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
